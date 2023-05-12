@@ -36,6 +36,7 @@ namespace DCT
             builder.RegisterType<Navigation>().SingleInstance();
 
             builder.RegisterType<MainWindowViewModel>();
+            builder.RegisterType<CoinMarketViewModel>();
             builder.RegisterViewWithBinding<CoinListViewModel, CoinListView>(mainWindow);
             builder.RegisterViewWithBinding<CoinDetailsViewModel, CoinDetailsView>(mainWindow);
             builder.RegisterType<HttpClient>().SingleInstance();

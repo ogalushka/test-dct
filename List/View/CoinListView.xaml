@@ -6,13 +6,49 @@
              xmlns:local="clr-namespace:DCT.List.View" xmlns:viewmodel="clr-namespace:DCT.List.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:CoinListViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <ListBox ItemsSource="{Binding List}">
-        <ListBox.ItemTemplate>
-            <DataTemplate DataType="{x:Type viewmodel:CoinsListItemViewModel}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Name}" />
-                    <TextBlock Text="{Binding Price}" />
-                    <Button Content="Details" Command="{Binding 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="Top Coins" Command="{Binding ShowTop10Command}" />
+            <TextBlock Grid.Column="2" Text="Search:" />
+            <TextBox Grid.Column="3" Text="{Binding SearchQuery}" />
+            <Button Grid.Column="4" Content="Search" Command="{Binding SearchCommand}" />
+        </Grid>
+
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding List}" 
+                 HorizontalContentAlignment="Stretch" 
+                 Grid.IsSharedSizeScope="True">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type viewmodel:CoinsListItemViewModel}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="c0"/>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="c2"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="c3"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="c4"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding Name}" Grid.Column="0"/>
+                        <TextBlock Text="Price USD: " Grid.Column="2" />
+                        <TextBlock Text="{Binding Price}" Grid.Column="3"/>
+                        <Button Content="Details" Grid.Column="5"
+                                Command="{Binding 
                                 Path=DataContext.ViewDetailsCommand,
                                 RelativeSource={
                                     RelativeSource FindAncestor,
@@ -20,8 +56,9 @@
                                 }
                             }"
                             CommandParameter="{Binding Dto}"/>
-                </StackPanel>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
 </UserControl>

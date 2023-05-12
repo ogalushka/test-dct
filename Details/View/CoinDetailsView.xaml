@@ -8,8 +8,60 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:CoinDetailsViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <TextBlock Text="Text"/>
-        <TextBlock Text="{Binding CoinName}" />
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Content="Back" Command="{Binding BackCommand}" HorizontalAlignment="Left"/>
+        <TextBlock Grid.Row="1" Text="{Binding CoinName}" FontSize="40"/>
+        <!-- Stats -->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Price" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Price}" HorizontalAlignment="Center"/>
+
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="24H Volume" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Volume}" HorizontalAlignment="Center"/>
+
+            <TextBlock Grid.Row="0" Grid.Column="4" Text="24H Price Change" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding PriceChange}" HorizontalAlignment="Center"/>
+        </Grid>
+        <ListBox Grid.Row="3"
+                 ItemsSource="{Binding Markets}" 
+                 HorizontalContentAlignment="Stretch" 
+                 Grid.IsSharedSizeScope="True">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type viewmodel:CoinMarketViewModel}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="c0"/>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="c2"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="c3"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="c4"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding Name}" Grid.Column="0"/>
+                        <TextBlock Text="Price USD: " Grid.Column="2" />
+                        <TextBlock Text="{Binding Price}" Grid.Column="3"/>
+                        <Button Content="Open market" Grid.Column="5" Command="{Binding OpenMarketWebPage}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
 </UserControl>
