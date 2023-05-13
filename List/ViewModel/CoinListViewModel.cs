@@ -3,8 +3,10 @@ using DCT.MVVM;
 using DCT.Service;
 using DCT.Service.Data;
 using DCT.Store;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DCT.List.ViewModel
@@ -28,16 +30,19 @@ namespace DCT.List.ViewModel
 
         private async Task ShowTop10()
         {
+            SetLoading(true);
             List.Clear();
             var coinsList = await coinService.GetTopCoins();
             foreach (var coin in coinsList)
             {
                 List.Add(new CoinsListItemViewModel(coin));
             }
+            SetLoading(false);
         }
 
         private async Task Search()
         {
+            SetLoading(true);
             var coinsList = await coinService.Search(SearchQuery);
 
             List.Clear();
@@ -45,6 +50,7 @@ namespace DCT.List.ViewModel
             {
                 List.Add(new CoinsListItemViewModel(coin));
             }
+            SetLoading(false);
         }
 
         private void ShowCoinDetails(CoinDto coin)
@@ -57,6 +63,17 @@ namespace DCT.List.ViewModel
             get { return searchQuery; }
             set { SetField(ref searchQuery, value); }
         }
+
+        private void SetLoading(bool isLoading)
+        {
+            this.isLoading = isLoading;
+            InvokeProertyChange(nameof(LoadingVisible));
+            InvokeProertyChange(nameof(ContentVisible));
+        }
+
+        private bool isLoading = false;
+        public Visibility LoadingVisible => isLoading ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility ContentVisible => isLoading ? Visibility.Collapsed : Visibility.Visible;
 
         public ObservableCollection<CoinsListItemViewModel> List { get; private set; }
 

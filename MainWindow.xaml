@@ -7,9 +7,20 @@
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" 
+        MinWidth="500"
+        MinHeight="300"
         Height="450" 
         Width="800">
-    <Grid>
+    <Window.Resources>
+        <Style BasedOn="{StaticResource {x:Type Button}}"
+           TargetType="Button">
+            <Setter Property="Padding" Value="5, 5" />
+        </Style>
+        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+            <Setter Property="Padding" Value="5" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="10, 10, 10, 10">
         <ContentControl Content="{Binding CurrentViewModel}" />
     </Grid>
 </Window>

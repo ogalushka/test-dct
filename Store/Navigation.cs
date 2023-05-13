@@ -18,9 +18,8 @@ namespace DCT.Store
 
         public event Action ViewModelChanged = () => { };
 
-        public INotifyPropertyChanged CurrentViewModel {
-            //TODO saner way to be not nullable?
-            get { return currentViewModel ?? throw new Exception(); }
+        public INotifyPropertyChanged? CurrentViewModel {
+            get { return currentViewModel; }
             set {
                 currentViewModel = value;
                 ViewModelChanged();

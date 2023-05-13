@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DCT.List.View" xmlns:viewmodel="clr-namespace:DCT.List.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:CoinListViewModel}"
+             xmlns:local="clr-namespace:DCT.List.View" 
+             xmlns:viewmodel="clr-namespace:DCT.List.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:CoinListViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -12,6 +14,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- Header -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -22,32 +25,45 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Content="Top Coins" Command="{Binding ShowTop10Command}" />
-            <TextBlock Grid.Column="2" Text="Search:" />
-            <TextBox Grid.Column="3" Text="{Binding SearchQuery}" />
-            <Button Grid.Column="4" Content="Search" Command="{Binding SearchCommand}" />
+            <Button Grid.Column="0" Content="Top Coins" Command="{Binding ShowTop10Command}" Padding="10,5" />
+            <TextBlock Grid.Column="2" Text="Search:"/>
+            <TextBox Grid.Column="3" Text="{Binding SearchQuery}" Padding="5" Margin="0, 0, 10, 0"/>
+            <Button Grid.Column="4" Content="Search" Padding="5" Command="{Binding SearchCommand}" />
         </Grid>
-
+        <!-- Coins list -->
+        <TextBlock Grid.Row="1" Text="Loading..." 
+                   HorizontalAlignment="Center" 
+                   Visibility="{Binding LoadingVisible}"/>
         <ListBox Grid.Row="1"
                  ItemsSource="{Binding List}" 
                  HorizontalContentAlignment="Stretch" 
+                 Margin="0, 10, 0, 0"
+                 Visibility="{Binding ContentVisible}"
                  Grid.IsSharedSizeScope="True">
+
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewmodel:CoinsListItemViewModel}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="c0"/>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="c2"/>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="c3"/>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="c4"/>
-                        </Grid.ColumnDefinitions>
+                    <DataTemplate.Resources>
+                        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                            <Setter Property="Padding" Value="5" />
+                        </Style>
+                    </DataTemplate.Resources>
 
-                        <TextBlock Text="{Binding Name}" Grid.Column="0"/>
-                        <TextBlock Text="Price USD: " Grid.Column="2" />
-                        <TextBlock Text="{Binding Price}" Grid.Column="3"/>
-                        <Button Content="Details" Grid.Column="5"
+                    <Border Background="LightCyan" CornerRadius="2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="c0"/>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="c2"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="c3"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="c4"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{Binding Name}" Grid.Column="0"/>
+                            <TextBlock Text="Price USD:" Grid.Column="2" />
+                            <TextBlock Text="{Binding Price}" Padding="5" Grid.Column="3"/>
+                            <Button Content="Details" Grid.Column="5"
                                 Command="{Binding 
                                 Path=DataContext.ViewDetailsCommand,
                                 RelativeSource={
@@ -56,7 +72,8 @@
                                 }
                             }"
                             CommandParameter="{Binding Dto}"/>
-                    </Grid>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

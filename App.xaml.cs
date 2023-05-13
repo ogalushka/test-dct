@@ -14,12 +14,14 @@ namespace DCT
 {
     public partial class App : Application
     {
+        private ILifetimeScope? container;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             var rootView = new MainWindow();
-            var container = BuildContainer(rootView);
+            container = BuildContainer(rootView);
 
             var navigation = container.Resolve<Navigation>();
             navigation.SetViewModel<CoinListViewModel>();
@@ -27,6 +29,13 @@ namespace DCT
             var mainWindowVM = container.Resolve<MainWindowViewModel>();
             rootView.DataContext = mainWindowVM;
             rootView.Show();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            container?.Dispose();
+
+            base.OnExit(e);
         }
 
         private ILifetimeScope BuildContainer(MainWindow mainWindow)
